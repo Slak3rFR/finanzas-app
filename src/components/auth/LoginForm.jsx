@@ -5,12 +5,15 @@ import {
 } from 'firebase/auth'
 
 import {
+  Eye,
+  EyeOff,
+} from 'lucide-react'
+
+import {
   useNavigate,
 } from 'react-router-dom'
 
-import {
-  auth,
-} from '../../firebase/config'
+import { auth } from '../../firebase/config'
 
 const LoginForm = () => {
 
@@ -20,8 +23,15 @@ const LoginForm = () => {
   const [email, setEmail] =
     useState('')
 
-  const [password, setPassword] =
-    useState('')
+  const [
+    password,
+    setPassword,
+  ] = useState('')
+
+  const [
+    showPassword,
+    setShowPassword,
+  ] = useState(false)
 
   const [error, setError] =
     useState('')
@@ -36,9 +46,9 @@ const LoginForm = () => {
 
       setError('')
 
-      try {
+      setLoading(true)
 
-        setLoading(true)
+      try {
 
         await signInWithEmailAndPassword(
           auth,
@@ -50,7 +60,7 @@ const LoginForm = () => {
 
       } catch (err) {
 
-        console.log(err)
+        console.error(err)
 
         setError(
           'Email o contraseña incorrectos'
@@ -65,75 +75,112 @@ const LoginForm = () => {
     }
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-black px-4'>
 
-      <form
-        onSubmit={handleSubmit}
-        className='bg-zinc-900 border border-zinc-800 p-10 rounded-3xl w-full max-w-md'
-      >
+    <div className='w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-2xl'>
 
-        <h1 className='text-4xl font-bold text-white mb-2'>
-          Finanzas
+      <div className='mb-8 text-center'>
+
+        <h1 className='text-4xl font-bold mb-2'>
+          Finanzas App
         </h1>
 
-        <p className='text-zinc-400 mb-8'>
+        <p className='text-zinc-400'>
           Iniciá sesión para continuar
         </p>
 
-        {error && (
+      </div>
 
-          <div className='bg-red-500/10 border border-red-500 text-red-400 p-3 rounded-xl mb-5 text-sm'>
-            {error}
-          </div>
+      <form
+        onSubmit={handleSubmit}
+        className='space-y-5'
+      >
 
-        )}
+        <div>
 
-        <div className='mb-5'>
+          <label className='block mb-2 text-sm text-zinc-400'>
 
-          <label className='block text-sm mb-2 text-zinc-300'>
             Email
+
           </label>
 
           <input
             type='email'
+            placeholder='tu@email.com'
             value={email}
             onChange={(e) =>
               setEmail(
                 e.target.value
               )
             }
-            className='w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3 text-white outline-none focus:border-white'
-            placeholder='tuemail@gmail.com'
-            required
+            className='w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 outline-none focus:border-emerald-500 transition-all'
           />
 
         </div>
 
-        <div className='mb-8'>
+        <div>
 
-          <label className='block text-sm mb-2 text-zinc-300'>
+          <label className='block mb-2 text-sm text-zinc-400'>
+
             Contraseña
+
           </label>
 
-          <input
-            type='password'
-            value={password}
-            onChange={(e) =>
-              setPassword(
-                e.target.value
-              )
-            }
-            className='w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3 text-white outline-none focus:border-white'
-            placeholder='********'
-            required
-          />
+          <div className='relative'>
+
+            <input
+              type={
+                showPassword
+                  ? 'text'
+                  : 'password'
+              }
+              placeholder='••••••••'
+              value={password}
+              onChange={(e) =>
+                setPassword(
+                  e.target.value
+                )
+              }
+              className='w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 pr-14 outline-none focus:border-emerald-500 transition-all'
+            />
+
+            <button
+              type='button'
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+              className='absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-all'
+            >
+
+              {showPassword ? (
+                <EyeOff
+                  size={20}
+                />
+              ) : (
+                <Eye size={20} />
+              )}
+
+            </button>
+
+          </div>
 
         </div>
+
+        {error && (
+
+          <div className='bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl p-3 text-sm'>
+
+            {error}
+
+          </div>
+
+        )}
 
         <button
           type='submit'
           disabled={loading}
-          className='w-full bg-white text-black py-3 rounded-xl font-semibold hover:opacity-90 transition'
+          className='w-full bg-emerald-500 hover:bg-emerald-600 transition-all rounded-xl p-4 font-semibold text-lg disabled:opacity-50'
         >
 
           {loading
@@ -145,6 +192,7 @@ const LoginForm = () => {
       </form>
 
     </div>
+
   )
 }
 
