@@ -32,6 +32,16 @@ const Cuotas = () => {
       const cardsData =
         await getCards()
 
+      console.log(
+        'TARJETAS:',
+        cardsData
+      )
+
+      console.log(
+        'CUOTAS:',
+        installmentsData
+      )
+
       setInstallments(
         installmentsData
       )
@@ -53,6 +63,7 @@ const Cuotas = () => {
   }, [])
 
   return (
+
     <Layout>
 
       <div className='mb-10'>
@@ -69,8 +80,6 @@ const Cuotas = () => {
 
       <div className='grid grid-cols-1 xl:grid-cols-3 gap-6'>
 
-        {/* FORM */}
-
         <div>
 
           <InstallmentForm
@@ -81,8 +90,6 @@ const Cuotas = () => {
           />
 
         </div>
-
-        {/* LISTA */}
 
         <div className='xl:col-span-2'>
 
@@ -99,6 +106,7 @@ const Cuotas = () => {
       </div>
 
     </Layout>
+
   )
 }
 

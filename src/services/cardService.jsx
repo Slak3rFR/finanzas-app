@@ -6,7 +6,6 @@ import {
 
 import {
   db,
-  auth,
 } from '../firebase/config'
 
 const cardsRef =
@@ -28,15 +27,13 @@ export const getCards =
     const snapshot =
       await getDocs(cardsRef)
 
-    return snapshot.docs
-      .filter(
-        (doc) =>
-          doc.data().uid ===
-          auth.currentUser.uid
-      )
-      .map((doc) => ({
+    return snapshot.docs.map(
+      (doc) => ({
+
         id: doc.id,
         ...doc.data(),
-      }))
+
+      })
+    )
 
   }
